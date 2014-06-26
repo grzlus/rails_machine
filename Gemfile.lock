@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     rails_machine (0.0.1)
-      rails (~> 4.1.2)
+      rails (>= 4.1)
 
 GEM
   remote: https://rubygems.org/

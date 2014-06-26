@@ -4,5 +4,8 @@ class Vehicle < ActiveRecord::Base
 	rails_machine do
 		state :test
 		state :another
+
+		transition to: :another
+		transition from: :another
 	end
 end

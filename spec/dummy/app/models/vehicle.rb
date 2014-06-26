@@ -3,5 +3,6 @@ class Vehicle < ActiveRecord::Base
 
 	rails_machine do
 		state :test
+		state :another
 	end
 end

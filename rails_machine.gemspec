@@ -7,8 +7,8 @@ require "rails_machine/version"
 Gem::Specification.new do |s|
   s.name        = "rails_machine"
   s.version     = RailsMachine::VERSION
-  s.authors     = ["Grzegorz Łuszczek"]
-  s.email       = ["grzegorz@piklus.pl"]
+  s.authors     = ["Grzegorz Łuszczek", "Adrian Słapa"]
+  s.email       = ["grzegorz@piklus.pl", "adrianouno@gmail.com"]
   s.homepage    = "https://github.com/grzlus/rails_machine"
   s.summary     = "State machine for Rails."
   s.description = "Simple implementation of state machine for Rails using enums."
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
 
   s.add_dependency "rails", ">= 4.1"
-	s.required_ruby_version = '>= 2.1'
+  s.required_ruby_version = '>= 2.1'
 
   s.add_development_dependency "sqlite3"
 end

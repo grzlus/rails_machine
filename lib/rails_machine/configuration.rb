@@ -4,8 +4,8 @@ module RailsMachine
     attr_reader :states, :transitions
 
     def initialize
-      @states ||= []
-      @transitions ||= {}
+      @states = []
+      @transitions = Hash.new{|hash,key| hash[key] = [] }
     end
 
     # Just runs code
@@ -18,7 +18,7 @@ module RailsMachine
     end
 
     def transition(from: :any, to: :any, guards: [])
-      (@transitions[from] ||= [])<< { to: to, guards: guards }
+      @transitions[from] << { to: to, guards: guards }
     end
 
     def next_id

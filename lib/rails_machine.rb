@@ -28,7 +28,7 @@ module RailsMachine
 
 			self.transitions = configuration.transitions
 
-			enum state: configuration.states
+			enum state: Hash[configuration.states]
 		end
 	end
 

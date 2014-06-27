@@ -2,7 +2,7 @@ class Vehicle < ActiveRecord::Base
 	include RailsMachine
 
 	rails_machine do
-		state :test
+		state :test, id: 10
 		state :another
 
 		transition to: :another

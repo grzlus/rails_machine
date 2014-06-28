@@ -20,7 +20,7 @@ module RailsMachine
 	end
 
 	module ClassMethods
-		def rails_machine(&blk)
+		def rails_machine(column: :state, &blk)
 			raise ArgumentError unless block_given?
 
 			configuration = Configuration.new
@@ -28,7 +28,7 @@ module RailsMachine
 
 			self.transitions = configuration.transitions
 
-			enum state: Hash[configuration.states]
+			enum column => Hash[configuration.states]
 		end
 	end
 

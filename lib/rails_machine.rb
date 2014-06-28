@@ -14,7 +14,7 @@ module RailsMachine
 		to = self.state.to_sym
 
 		transitions = (transitions_for(from) + transitions_for(:any)).select { |t| t[:to] == to || t[:to] == :any }
-		errors.add(:state, :transition_not_found) if transitions.empty?
+		return errors.add(:state, :transition_not_found) if transitions.empty?
 
 		errors.add(:state, :guard_failed) if transitions.none? { |t| t[:guards].all? { |guard| guard.call(self) } }
 	end

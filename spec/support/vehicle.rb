@@ -8,6 +8,8 @@ class Vehicle < ActiveRecord::Base
     state :speeding
     state :broken
 
+    init_state :stopped
+
     transition from: :stopped, to: :idling
     transition from: :idling, to: :stopped
 

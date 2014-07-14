@@ -1,16 +1,21 @@
 module RailsMachine
   class Configuration
 
-    attr_reader :states, :transitions
+    attr_reader :states, :transitions, :init_states
 
     def initialize
       @states = []
+      @init_states = []
       @transitions = Hash.new{|hash,key| hash[key] = [] }
     end
 
     # Just runs code
     def run(&blk)
       self.instance_eval(&blk)
+    end
+
+    def init_state(state)
+      @init_states << state
     end
 
     def state(name, id: next_id)

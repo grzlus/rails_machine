@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Vehicle with RailsMachine" do
 
-  let(:vehicle) { Vehicle.new }
+  let(:vehicle) { Vehicle.create }
 
   it "starts as stopped" do
     expect(vehicle).to be_stopped
@@ -29,16 +29,26 @@ describe "Vehicle with RailsMachine" do
 
   describe "loose transition (from any)" do
 
+    before do
+      vehicle.idling!
+    end
+
     it "can be broken when idling" do
-      vehicle = Vehicle.new(state: :idling)
       vehicle.broken!
       expect(vehicle).to be_broken
     end
 
     it "can be broken when speeding" do
-      vehicle = Vehicle.new(state: :speeding)
+      vehicle.driving!
+      vehicle.speeding!
       vehicle.broken!
       expect(vehicle).to be_broken
+    end
+  end
+
+  describe "init_states" do
+    it "doesn't allow bad state" do
+      expect{ Vehicle.create!(state: :driving) }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 end

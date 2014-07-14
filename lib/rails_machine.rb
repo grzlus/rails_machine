@@ -7,9 +7,29 @@ module RailsMachine
     cattr_accessor :transitions
 
     validate :allowed_transition, if: :state_changed?
+    private
+    cattr_accessor :init_states
   end
 
   def allowed_transition
+    if self.new_record?
+      validate_init_state
+    else
+      validate_transition
+    end
+  end
+
+  def validate_init_state
+    unless valid_init_state
+      errors.add(:state,:invalid_init_state)
+    end
+  end
+
+  def valid_init_state
+    init_states.empty? || init_states.include?(self.state.to_sym)
+  end
+
+  def validate_transition
     from = self.state_was.to_sym
     to = self.state.to_sym
 
@@ -27,7 +47,7 @@ module RailsMachine
       configuration.run(&blk)
 
       self.transitions = configuration.transitions
-
+      self.init_states = configuration.init_states
       enum column => Hash[configuration.states]
     end
   end

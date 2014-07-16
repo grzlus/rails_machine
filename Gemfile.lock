@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     rails_machine (0.0.5)
-      rails (>= 4.1)
+      rails (~> 4.1)
 
 GEM
   remote: https://rubygems.org/
@@ -106,5 +106,5 @@ PLATFORMS
 
 DEPENDENCIES
   rails_machine!
-  rspec-rails
+  rspec-rails (~> 3.0)
   sqlite3

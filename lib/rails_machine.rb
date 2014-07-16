@@ -6,12 +6,12 @@ module RailsMachine
   included do
     cattr_accessor :transitions
 
-    validate :allowed_transition, if: :state_changed?
+    validate :allowed_state, if: :state_changed?
     private
     cattr_accessor :init_states
   end
 
-  def allowed_transition
+  def allowed_state
     if self.new_record?
       validate_init_state
     else

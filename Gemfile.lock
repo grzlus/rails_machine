@@ -107,4 +107,4 @@ PLATFORMS
 DEPENDENCIES
   rails_machine!
   rspec-rails (~> 3.0)
-  sqlite3
+  sqlite3 (~> 1.3)

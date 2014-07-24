@@ -2,6 +2,17 @@ require 'spec_helper'
 
 describe "Vehicle with RailsMachine" do
 
+  describe "init state" do
+    it do
+      vehicle = Vehicle.new(state: :stopped)
+      expect(vehicle).to be_valid
+    end
+    it do
+      vehicle = Vehicle.new(state: :idling)
+      expect(vehicle).not_to be_valid
+    end
+  end
+
   let(:vehicle) { Vehicle.create }
 
   it "starts as stopped" do

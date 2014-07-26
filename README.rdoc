@@ -1,3 +1,22 @@
 = RailsMachine
 
-This project rocks and uses MIT-LICENSE.
+Simple implementation of state machine for Rails greater than 4.1.
+
+In this project we used Enums introduced in Rails 4.1.
+
+== Usage
+
+~~~
+class Vehicle < ActiveRecord::Base
+	include RailsMachine
+
+	rails_machine do
+    state :first_state # Not explicitly sets id to 1
+		state :test, id: 10
+		state :another # Not explicitly sets id to 11
+
+		transition to: :another
+		transition from: :another
+	end
+end
+~~~

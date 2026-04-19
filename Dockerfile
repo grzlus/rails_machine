@@ -1,15 +1,11 @@
-FROM ruby:2.1-slim
+FROM ruby:3-slim
 
-RUN printf 'deb http://archive.debian.org/debian jessie main\ndeb http://archive.debian.org/debian-security jessie/updates main\n' \
-      > /etc/apt/sources.list && \
-    apt-get -o Acquire::Check-Valid-Until=false update -qq && \
-    apt-get -o Acquire::Check-Valid-Until=false install -y --force-yes --no-install-recommends \
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
       build-essential \
       libsqlite3-dev \
+      libyaml-dev \
     && rm -rf /var/lib/apt/lists/*
-
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
 
 WORKDIR /app
 

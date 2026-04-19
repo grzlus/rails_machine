@@ -48,7 +48,7 @@ module RailsMachine
 
       self.transitions = configuration.transitions
       self.init_states = configuration.init_states
-      enum column => Hash[configuration.states]
+      enum column, Hash[configuration.states]
 
       validates_presence_of column
     end

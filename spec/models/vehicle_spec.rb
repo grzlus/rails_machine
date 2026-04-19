@@ -61,5 +61,15 @@ describe "Vehicle with RailsMachine" do
     it "doesn't allow bad state" do
       expect{ Vehicle.create!(state: :driving) }.to raise_error(ActiveRecord::RecordInvalid)
     end
+
+    it "does not crash when state is nil" do
+      vehicle = Vehicle.new(state: nil)
+      expect { vehicle.valid? }.not_to raise_error
+    end
+
+    it "is invalid when state is nil" do
+      vehicle = Vehicle.new(state: nil)
+      expect(vehicle).not_to be_valid
+    end
   end
 end

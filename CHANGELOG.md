@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Fixed
+- `valid_init_state` no longer raises `NoMethodError` when the state attribute is nil
+
 ### Breaking
 - Minimum Ruby version raised to 3.0
 - Minimum ActiveRecord version raised to 7.0

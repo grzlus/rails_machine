@@ -26,6 +26,7 @@ module RailsMachine
   end
 
   def valid_init_state
+    return true if self.state.nil?
     init_states.empty? || init_states.include?(self.state.to_sym)
   end
 

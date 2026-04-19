@@ -9,15 +9,8 @@ module RailsMachine
     cattr_accessor :transitions, instance_writer: false
     cattr_accessor :init_states, instance_writer: false
 
-    validate :allowed_state, if: ->{ new_record? || state_changed? }
-  end
-
-  def allowed_state
-    if self.new_record?
-      validate_init_state
-    else
-      validate_transition
-    end
+    validate :validate_init_state, on: :create
+    validate :validate_transition, on: :update, if: :state_changed?
   end
 
   def validate_init_state

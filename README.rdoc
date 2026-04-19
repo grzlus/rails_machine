@@ -1,21 +1,113 @@
 = RailsMachine
 
-Simple implementation of state machine for Rails greater than 4.1.
+A small state machine for ActiveRecord models, built on top of Rails enums.
 
-In this project we used Enums introduced in Rails 4.1.
+== Installation
+
+Add to your Gemfile:
+
+  gem 'rails_machine'
+
+Requires Ruby >= 3.0 and ActiveRecord >= 7.0.
 
 == Usage
 
+Add an integer column to your model to hold the state:
+
+  class AddStateToVehicles < ActiveRecord::Migration[7.0]
+    def change
+      add_column :vehicles, :state, :integer, default: 0, null: false
+    end
+  end
+
+Include +RailsMachine+ and declare the machine:
 
   class Vehicle < ActiveRecord::Base
     include RailsMachine
 
     rails_machine do
-      state :first_state # Not explicitly sets id to 1
-      state :test, id: 10
-      state :another # Not explicitly sets id to 11
-      
-      transition to: :another
-      transition from: :another
+      state :stopped
+      state :idling
+      state :driving
+      state :broken
+
+      init_state :stopped
+
+      transition from: :stopped, to: :idling
+      transition from: :idling,  to: :stopped
+      transition from: :idling,  to: :driving
+      transition from: :driving, to: :idling
+
+      transition from: :any,    to: :broken
+      transition from: :broken, to: :stopped, guards: [->(v) { v.inspected? }]
     end
   end
+
+== States
+
+States are stored as Rails enums. IDs start at 0 and increment by 1, or you can set them explicitly:
+
+  state :stopped           # id 0
+  state :idling            # id 1
+  state :archived, id: 99  # id 99
+  state :legacy            # id 100
+
+You get all the usual enum helpers for free:
+
+  vehicle.stopped?      # => true
+  vehicle.idling!       # persists the transition
+  Vehicle.stopped       # scope
+  Vehicle.states        # { "stopped" => 0, "idling" => 1, ... }
+
+Defining the same state name twice raises +ArgumentError+.
+
+== Init states
+
++init_state+ declares which states a record is allowed to start in. Records saved with any other initial value fail validation.
+
+  init_state :stopped
+  init_state :broken   # multiple allowed
+
+If no +init_state+ is declared, any state is accepted on creation.
+
+== Transitions
+
+Each +transition+ defines a legal +from+ → +to+ pair. Attempting an undeclared transition raises +ActiveRecord::RecordInvalid+ on save (or returns +false+ from +valid?+).
+
++:any+ is a wildcard:
+
+  transition from: :any, to: :broken      # any state can become :broken
+  transition from: :broken, to: :any      # :broken can become anything
+  transition from: :any, to: :any         # no restrictions
+
+== Guards
+
+Guards are callables that receive the record and must return truthy for the transition to pass:
+
+  transition from: :broken, to: :stopped, guards: [->(v) { v.inspected? }]
+
+If every guard on every matching transition returns falsy, validation adds a +:guard_failed+ error.
+
+== Custom column
+
+Pass +column:+ to use something other than +:state+:
+
+  rails_machine column: :status do
+    state :draft
+    state :published
+    transition from: :draft, to: :published
+  end
+
+== Error messages
+
+Validation failures add errors on the state column with these keys:
+
+* +:invalid_init_state+ — record was created in a state not listed in +init_state+
+* +:transition_not_found+ — no transition defined for the attempted state change
+* +:guard_failed+ — a matching transition exists but its guard(s) returned falsy
+
+Default English messages ship with the gem. Override them under +en.errors.messages+ in your own locale files.
+
+== License
+
+MIT.

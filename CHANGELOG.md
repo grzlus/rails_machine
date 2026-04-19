@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 - 2026-04-19
 
 ### Fixed
 - `valid_init_state` no longer raises `NoMethodError` when the state attribute is nil
@@ -21,6 +21,8 @@
 - Test suite no longer requires a dummy Rails app — bootstrapped directly with ActiveRecord and SQLite in memory
 - `rspec-rails` replaced with plain `rspec`
 - Docker-based development environment added (`Dockerfile` + `compose.yml`)
+- State validation split into two separate validators (`on: :create` and `on: :update, if: :state_changed?`) — dispatcher method removed
+- README rewritten to cover `init_state`, guards, `column:`, enum-provided methods, and error keys
 
 ## 0.0.7
 

@@ -57,6 +57,28 @@ describe "Vehicle with RailsMachine" do
     end
   end
 
+  describe "guards" do
+    before { vehicle.idling!; vehicle.broken! }
+
+    it "blocks a transition when the guard fails" do
+      vehicle.inspected = false
+      expect { vehicle.stopped! }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it "allows a transition when the guard passes" do
+      vehicle.inspected = true
+      vehicle.stopped!
+      expect(vehicle).to be_stopped
+    end
+
+    it "adds a guard_failed error when blocked" do
+      vehicle.inspected = false
+      vehicle.state = :stopped
+      vehicle.valid?
+      expect(vehicle.errors[:state]).to include("transition was blocked by a guard")
+    end
+  end
+
   describe "error messages" do
     it "renders a human-readable message for invalid init state" do
       vehicle = Vehicle.new(state: :idling)

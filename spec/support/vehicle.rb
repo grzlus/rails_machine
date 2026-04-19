@@ -20,7 +20,7 @@ class Vehicle < ActiveRecord::Base
     transition from: :speeding, to: :driving
 
     transition from: :any, to: :broken
-    transition from: :broken, to: :stopped
+    transition from: :broken, to: :stopped, guards: [->(v) { v.inspected? }]
   end
 end
 

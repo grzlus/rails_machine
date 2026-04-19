@@ -57,6 +57,24 @@ describe "Vehicle with RailsMachine" do
     end
   end
 
+  describe "class attribute protection" do
+    it "does not allow instance-level mutation of init_states" do
+      expect { vehicle.init_states = [:driving] }.to raise_error(NoMethodError)
+    end
+
+    it "does not allow instance-level mutation of transitions" do
+      expect { vehicle.transitions = {} }.to raise_error(NoMethodError)
+    end
+
+    it "freezes init_states so its contents cannot be mutated" do
+      expect { Vehicle.init_states << :driving }.to raise_error(FrozenError)
+    end
+
+    it "freezes transitions so its contents cannot be mutated" do
+      expect { Vehicle.transitions[:stopped] << { to: :speeding, guards: [] } }.to raise_error(FrozenError)
+    end
+  end
+
   describe "guards" do
     before { vehicle.idling!; vehicle.broken! }
 

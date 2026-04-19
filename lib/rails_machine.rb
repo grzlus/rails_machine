@@ -6,11 +6,10 @@ module RailsMachine
   extend ActiveSupport::Concern
 
   included do
-    cattr_accessor :transitions
+    cattr_accessor :transitions, instance_writer: false
+    cattr_accessor :init_states, instance_writer: false
 
     validate :allowed_state, if: ->{ new_record? || state_changed? }
-    private
-    cattr_accessor :init_states
   end
 
   def allowed_state
@@ -49,8 +48,8 @@ module RailsMachine
       configuration = Configuration.new
       configuration.run(&blk)
 
-      self.transitions = configuration.transitions
-      self.init_states = configuration.init_states
+      self.transitions = configuration.transitions.transform_values(&:freeze).freeze
+      self.init_states = configuration.init_states.freeze
       enum column, configuration.states
 
       validates_presence_of column

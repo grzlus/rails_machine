@@ -1,5 +1,7 @@
 require 'rails_machine/configuration'
 
+I18n.load_path << File.expand_path('../config/locales/rails_machine.en.yml', __dir__)
+
 module RailsMachine
   extend ActiveSupport::Concern
 

@@ -7,6 +7,7 @@
 - Defining the same state name twice now raises `ArgumentError` instead of silently corrupting the machine
 - States are now stored as a plain Hash internally — no more `Array` → `Hash` conversion when building the enum
 - `rails_machine` without a block now raises `ArgumentError` with a descriptive message
+- Bundled `config/locales/rails_machine.en.yml` — error keys now render as human-readable messages out of the box
 
 ### Breaking
 - Minimum Ruby version raised to 3.0

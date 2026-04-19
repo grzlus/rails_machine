@@ -57,6 +57,21 @@ describe "Vehicle with RailsMachine" do
     end
   end
 
+  describe "error messages" do
+    it "renders a human-readable message for invalid init state" do
+      vehicle = Vehicle.new(state: :idling)
+      vehicle.valid?
+      expect(vehicle.errors[:state].first).not_to match(/Translation missing/)
+    end
+
+    it "renders a human-readable message for invalid transition" do
+      vehicle.valid? # persisted, stopped
+      vehicle.state = :driving
+      vehicle.valid?
+      expect(vehicle.errors[:state].first).not_to match(/Translation missing/)
+    end
+  end
+
   describe "missing configuration block" do
     it "raises with a descriptive message" do
       expect do

@@ -1,0 +1,6 @@
+en:
+  errors:
+    messages:
+      invalid_init_state: "is not a valid initial state"
+      transition_not_found: "transition is not allowed"
+      guard_failed: "transition was blocked by a guard"

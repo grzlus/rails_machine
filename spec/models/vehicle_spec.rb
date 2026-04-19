@@ -57,6 +57,20 @@ describe "Vehicle with RailsMachine" do
     end
   end
 
+  describe "duplicate state names" do
+    it "raises on duplicate state definition" do
+      expect do
+        Class.new(ActiveRecord::Base) do
+          include RailsMachine
+          rails_machine do
+            state :active
+            state :active
+          end
+        end
+      end.to raise_error(ArgumentError, /already defined/)
+    end
+  end
+
   describe "init_states" do
     it "doesn't allow bad state" do
       expect{ Vehicle.create!(state: :driving) }.to raise_error(ActiveRecord::RecordInvalid)

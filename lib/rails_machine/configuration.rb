@@ -19,6 +19,7 @@ module RailsMachine
     end
 
     def state(name, id: next_id)
+      raise ArgumentError, "State :#{name} is already defined" if @states.any? { |s| s.first == name }
       @states << [name, id]
     end
 

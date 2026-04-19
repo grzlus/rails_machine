@@ -57,6 +57,17 @@ describe "Vehicle with RailsMachine" do
     end
   end
 
+  describe "missing configuration block" do
+    it "raises with a descriptive message" do
+      expect do
+        Class.new(ActiveRecord::Base) do
+          include RailsMachine
+          rails_machine
+        end
+      end.to raise_error(ArgumentError, /requires a configuration block/)
+    end
+  end
+
   describe "duplicate state names" do
     it "raises on duplicate state definition" do
       expect do

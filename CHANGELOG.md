@@ -6,6 +6,7 @@
 - `valid_init_state` no longer raises `NoMethodError` when the state attribute is nil
 - Defining the same state name twice now raises `ArgumentError` instead of silently corrupting the machine
 - States are now stored as a plain Hash internally — no more `Array` → `Hash` conversion when building the enum
+- `rails_machine` without a block now raises `ArgumentError` with a descriptive message
 
 ### Breaking
 - Minimum Ruby version raised to 3.0

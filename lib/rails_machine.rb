@@ -42,7 +42,7 @@ module RailsMachine
 
   module ClassMethods
     def rails_machine(column: :state, &blk)
-      raise ArgumentError unless block_given?
+      raise ArgumentError, "rails_machine requires a configuration block" unless block_given?
 
       configuration = Configuration.new
       configuration.run(&blk)

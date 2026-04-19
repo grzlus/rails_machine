@@ -4,7 +4,7 @@ module RailsMachine
     attr_reader :states, :transitions, :init_states
 
     def initialize
-      @states = []
+      @states = {}
       @init_states = []
       @transitions = Hash.new{|hash,key| hash[key] = [] }
     end
@@ -19,8 +19,8 @@ module RailsMachine
     end
 
     def state(name, id: next_id)
-      raise ArgumentError, "State :#{name} is already defined" if @states.any? { |s| s.first == name }
-      @states << [name, id]
+      raise ArgumentError, "State :#{name} is already defined" if @states.key?(name)
+      @states[name] = id
     end
 
     def transition(from: :any, to: :any, guards: [])
@@ -31,7 +31,7 @@ module RailsMachine
       if @states.empty?
         0
       else
-        @states.map(&:second).max.next
+        @states.values.max.next
       end
     end
   end
